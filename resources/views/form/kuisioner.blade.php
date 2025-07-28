@@ -7,7 +7,7 @@
             <h2 class="text-center mb-4">Form Kuisioner</h2>
 
             @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success">{{ session('success!') }}</div>
             @endif
 
             <form action="{{ route('kuisioner.submit', $formUserId) }}" method="POST">
