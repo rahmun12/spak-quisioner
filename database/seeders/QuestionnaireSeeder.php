@@ -32,14 +32,15 @@ class QuestionnaireSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-        }
-        foreach ($options as $optText) {
-            DB::table('question_options')->insert([
-                'question_id' => $questionId,
-                'option_text' => $optText,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
+
+            foreach ($options as $optText) {
+                DB::table('question_options')->insert([
+                    'question_id' => $questionId,
+                    'option_text' => $optText,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
         }
     }
 }
