@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\QuestionnaireAnswer;
+use App\Models\FormUser;
 
 class QuestionnaireController extends Controller
 {
@@ -38,7 +39,7 @@ class QuestionnaireController extends Controller
             QuestionnaireAnswer::create([
                 'form_user_id' => $id,
                 'question_id'  => $questionId,
-                'answer_id'    => $answerId,
+                'selected_option_id' => $answerId,
             ]);
         }
 
@@ -46,5 +47,18 @@ class QuestionnaireController extends Controller
         return redirect()
             ->route('data.form')
             ->with('success', 'Terima kasih telah mengisi kuisioner!');
+    }
+
+    /**
+     * Tampilkan daftar jawaban user untuk admin
+     */
+    public function showSubmissions()
+    {
+        // Ambil semua data form user2 beserta jawabannya dan data personal
+        $submissions = FormUser::with(['answers.question', 'answers.selectedOption', 'personalData'])
+            ->has('answers') // Hanya ambil yang sudah mengisi kuisioner
+            ->get();
+
+        return view('admin.submissions', compact('submissions'));
     }
 }
