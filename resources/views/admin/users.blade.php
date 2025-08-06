@@ -28,9 +28,10 @@
 
             <h5 class="card-title mt-4">Jawaban Kuisioner</h5>
             @forelse ($user->questionnaireAnswers as $answer)
+            <!-- {{ $answer }} -->
             <p>
                 <strong>{{ optional($answer->question)->text ?? '[Pertanyaan tidak ditemukan]' }}</strong><br>
-                Jawaban: {{ optional($answer->option)->text ?? '[Jawaban tidak ditemukan]' }}
+                Jawaban: {{ optional($answer->selectedOption)->option_text ?? '[Jawaban tidak ditemukan]' }}
             </p>
             @empty
             <p class="text-muted">Belum mengisi kuisioner.</p>

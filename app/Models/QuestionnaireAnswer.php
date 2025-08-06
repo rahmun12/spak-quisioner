@@ -22,10 +22,10 @@ class QuestionnaireAnswer extends Model
         return $this->belongsTo(Question::class);
     }
 
-    public function option()
-    {
-        return $this->belongsTo(QuestionOption::class, 'answer_id');
-    }
+    // public function option()
+    // {
+    //     return $this->belongsTo(QuestionOption::class, 'answer_id');
+    // }
 
 
     public function selectedOption()
