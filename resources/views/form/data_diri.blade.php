@@ -110,8 +110,8 @@
                 <input type="text" class="form-control" id="full_name" name="full_name" required>
             </div>
             <div class="col-md-6">
-                <label for="birth_date" class="form-label">Tanggal Lahir</label>
-                <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                <label for="age" class="form-label">Umur</label>
+                <input type="text" class="form-control" id="age" name="age" required>
             </div>
         </div>
 
