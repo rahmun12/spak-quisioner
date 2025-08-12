@@ -3,11 +3,34 @@
 @section('content')
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Data User & Jawaban Kuisioner</h2>
+    
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     @foreach ($users as $user)
     <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            {{ $user->personalData ? $user->personalData->full_name : 'Tanpa Nama' }} - {{ $user->created_at->format('d/m/Y') }}
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div>
+                {{ $user->personalData ? $user->personalData->full_name : 'Tanpa Nama' }} - {{ $user->created_at->format('d/m/Y') }}
+            </div>
+            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </form>
         </div>
         <div class="card-body">
             <h5 class="card-title">Data Diri</h5>

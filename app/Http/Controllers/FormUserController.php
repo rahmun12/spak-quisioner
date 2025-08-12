@@ -16,10 +16,10 @@ class FormUserController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request
+        
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
+            'age' => 'required|string|max:10',
             'address' => 'required|string',
             'gender' => 'required|in:Laki-laki,Perempuan',
             'phone_number' => 'required|string|max:20',
@@ -28,15 +28,15 @@ class FormUserController extends Controller
             'service_type' => 'required|string|in:PBB,Pajak Hotel,Pajak Parkir,Pajak Restoran',
         ]);
 
-        // Add token to validated data
+        
         $validated['token'] = Str::random(30);
 
-        // Create the form user
+        
         $formUser = FormUser::create($validated);
         PersonalData::create([
             'form_user_id' => $formUser->id,
             'full_name' => $validated['full_name'],
-            'birth_date' => $validated['birth_date'],
+            'age' => $validated['age'],
             'address' => $validated['address'],
             'gender' => $validated['gender'],
             'phone_number' => $validated['phone_number'],
@@ -45,7 +45,7 @@ class FormUserController extends Controller
             'service_type' => $validated['service_type'],
         ]);
 
-        // Regenerate session ID for security
+        
         $request->session()->regenerate();
 
         return redirect()->route('kuisioner.form', $formUser->id)

@@ -16,7 +16,7 @@ class Admin extends Authenticatable
         'username',
         'password',
         'name',
-        'email', // Add email to fillable fields
+        'email', 
     ];
 
     /**

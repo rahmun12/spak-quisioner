@@ -48,5 +48,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/users', [AdminController::class, 'index'])
             ->name('admin.users');
+            
+        Route::delete('/users/{id}', [AdminController::class, 'destroy'])
+            ->name('admin.users.destroy');
     });
 });

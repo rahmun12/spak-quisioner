@@ -10,7 +10,7 @@ class PersonalData extends Model
         'form_user_id',
         'full_name',
         'address',
-        'birth_date',
+        'age',
         'service_type',
         'phone_number',
         'gender',

@@ -65,7 +65,7 @@ class AdminRegisterController extends Controller
         return Admin::create([
             'name' => $data['name'],
             'username' => $data['username'],
-            'password' => $data['password'], // The setPasswordAttribute in the model will hash it
+            'password' => $data['password'], 
         ]);
     }
 }
