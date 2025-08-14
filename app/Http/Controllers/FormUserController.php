@@ -16,7 +16,7 @@ class FormUserController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'age' => 'required|string|max:10',
@@ -28,10 +28,10 @@ class FormUserController extends Controller
             'service_type' => 'required|string|in:PBB,Pajak Hotel,Pajak Parkir,Pajak Restoran',
         ]);
 
-        
+
         $validated['token'] = Str::random(30);
 
-        
+
         $formUser = FormUser::create($validated);
         PersonalData::create([
             'form_user_id' => $formUser->id,
@@ -45,7 +45,7 @@ class FormUserController extends Controller
             'service_type' => $validated['service_type'],
         ]);
 
-        
+
         $request->session()->regenerate();
 
         return redirect()->route('kuisioner.form', $formUser->id)

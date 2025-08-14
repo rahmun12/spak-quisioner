@@ -2,6 +2,20 @@
 
 @section('content')
 <style>
+    .table {
+        border: 1px solid #dee2e6;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
     body {
         background-color: #f5f6f8;
     }
@@ -12,42 +26,46 @@
         margin-bottom: 25px;
     }
 
-    .data-card {
-        border: 1px solid #ddd;
-        border-radius: 6px;
+    .table-container {
         background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         overflow: hidden;
         margin-bottom: 20px;
     }
 
-    .data-card-header {
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .table th {
         background-color: #005EB8;
-        color: #fff;
-        padding: 10px 15px;
+        color: white;
         font-weight: 600;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        white-space: nowrap;
+        vertical-align: middle;
     }
 
-    .data-card-body {
-        padding: 0;
+    .table td {
+        vertical-align: middle;
     }
 
-    .data-section {
-        padding: 15px;
-        border-bottom: 1px solid #e6e6e6;
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 94, 184, 0.05);
     }
 
-    .data-section:last-child {
-        border-bottom: none;
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 94, 184, 0.1);
     }
 
-    .data-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #005EB8;
-        margin-bottom: 8px;
+    .btn-delete {
+        padding: 4px 8px;
+        font-size: 0.85rem;
     }
 
     .data-table {
@@ -80,6 +98,27 @@
         background-color: #b02a37;
     }
 
+    .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        border-radius: 8px 8px 0 0 !important;
+        font-weight: 600;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #005EB8;
+    }
+
+    .btn i {
+        margin-right: 5px;
+    }
+
     p.text-muted {
         font-style: italic;
         color: #777;
@@ -108,62 +147,132 @@
 <div class="container mt-4">
     <h2 class="text-center">Data & Jawaban Kuisioner</h2>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- Filter Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-filter me-2"></i>Filter Data
         </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    @foreach ($users as $user)
-    <div class="data-card">
-        <div class="data-card-header">
-            <span>{{ $user->personalData ? $user->personalData->full_name : 'Tanpa Nama' }} - {{ $user->created_at->format('d/m/Y') }}</span>
-            <button type="button" class="btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $user->id }}">
-                <i class="fas fa-trash"></i> Hapus
-            </button>
-        </div>
-
-        <div class="data-card-body">
-            <div class="data-section">
-                <div class="data-title">Data Diri</div>
-                @if ($user->personalData)
-                <table class="data-table">
-                    <tr><td>Alamat</td><td>{{ $user->personalData->address }}</td></tr>
-                    <tr><td>Tanggal Lahir</td><td>{{ $user->personalData->birth_date }}</td></tr>
-                    <tr><td>Jenis Kelamin</td><td>{{ $user->personalData->gender }}</td></tr>
-                    <tr><td>No HP</td><td>{{ $user->personalData->phone_number }}</td></tr>
-                    <tr><td>Pendidikan</td><td>{{ $user->personalData->education }}</td></tr>
-                    <tr><td>Pekerjaan</td><td>{{ $user->personalData->occupation }}</td></tr>
-                    <tr><td>Jenis Layanan</td><td>{{ $user->personalData->service_type }}</td></tr>
-                </table>
-                @else
-                <p class="text-muted">Data pribadi belum tersedia.</p>
-                @endif
-            </div>
-
-            <div class="data-section">
-                <div class="data-title">Jawaban Kuisioner</div>
-                @forelse ($user->questionnaireAnswers as $answer)
-                    <p>
-                        <strong>{{ optional($answer->question)->text ?? '[Pertanyaan tidak ditemukan]' }}</strong><br>
-                        Jawaban: {{ optional($answer->selectedOption)->option_text ?? '[Jawaban tidak ditemukan]' }}
-                    </p>
-                @empty
-                    <p class="text-muted">Belum mengisi kuisioner.</p>
-                @endforelse
-            </div>
+        <div class="card-body">
+            <form action="{{ route('admin.users') }}" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label">Dari Tanggal</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ $startDate ?? '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label">Sampai Tanggal</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $endDate ?? '' }}">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search me-1"></i> Filter
+                    </button>
+                    <a href="{{ route('admin.users') }}" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    @if($users->isEmpty())
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i> Tidak ada data yang ditemukan untuk filter yang dipilih.
+    </div>
+    @else
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Tanggal</th>
+                        <th>Alamat</th>
+                        <th>Umur</th>
+                        <th>Jenis Kelamin</th>
+                        <th>No HP</th>
+                        <th>Pendidikan</th>
+                        <th>Pekerjaan</th>
+                        <th>Jenis Layanan</th>
+                        @foreach($questions as $question)
+                        <th class="text-center small">
+                            <div class="fw-bold">{{ $question->text }}</div>
+                        </th>
+                        @endforeach
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                    // Calculate the starting number for the current page
+                    $counter = ($users->currentPage() - 1) * $users->perPage() + 1;
+                    @endphp
+                    @foreach ($users as $user)
+                    <tr>
+                        <td>{{ $counter++ }}</td>
+                        <td>{{ $user->personalData ? $user->personalData->full_name : 'Tanpa Nama' }}</td>
+                        <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $user->personalData->address ?? '-' }}</td>
+                        <td>{{ $user->personalData->age ?? '-' }}</td>
+                        <td>{{ $user->personalData->gender ?? '-' }}</td>
+                        <td>{{ $user->personalData->phone_number ?? '-' }}</td>
+                        <td>{{ $user->personalData->education ?? '-' }}</td>
+                        <td>{{ $user->personalData->occupation ?? '-' }}</td>
+                        <td>{{ $user->personalData->service_type ?? '-' }}</td>
+
+                        @php
+                        // Group answers by question ID for easier access
+                        $answersByQuestionId = [];
+                        foreach ($user->questionnaireAnswers as $answer) {
+                        if ($answer->question) {
+                        $answersByQuestionId[$answer->question->id] = $answer->selectedOption->option_text;
+                        }
+                        }
+                        @endphp
+
+                        @foreach($questions as $question)
+                        @php
+                        $userAnswer = $answersByQuestionId[$question->id] ?? null;
+                        @endphp
+                        <td class="text-center">
+                            {{ $userAnswer ?? '-' }}
+                        </td>
+                        @endforeach
+
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $user->id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="p-3">
+            {{ $users->appends(request()->except('page'))->links() }}
+        </div>
+    </div>
+    @endif
+
     <!-- Modal Konfirmasi Hapus -->
+    @foreach ($users as $user)
     <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $user->id }}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -188,4 +297,27 @@
     </div>
     @endforeach
 </div>
+
+<style>
+    .pagination {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .page-link {
+        color: #005EB8;
+        border: 1px solid #dee2e6;
+        margin: 0 2px;
+    }
+
+    .page-item.active .page-link {
+        background-color: #005EB8;
+        border-color: #005EB8;
+    }
+
+    .page-link:hover {
+        color: #003366;
+        background-color: #e9ecef;
+    }
+</style>
 @endsection

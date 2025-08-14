@@ -91,7 +91,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.users') ? 'active' : '' }}" 
-                           href="{{ route('admin.users') }}">Data </a>
+                           href="{{ route('admin.users') }}">Data Kuisioner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.answers') ? 'active' : '' }}" 
+                           href="{{ route('admin.answers') }}">Nilai Kuisioner</a>
                     </li>
                     <li class="nav-item">
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-inline">
