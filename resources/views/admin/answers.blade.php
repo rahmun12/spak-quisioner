@@ -102,32 +102,31 @@
 <div class="container mt-4">
     <h2 class="text-center mb-4">Data Jawaban Kuisioner (Nilai)</h2>
 
-    <!-- Filter Card -->
-    <div class="card filter-card mb-4">
-        <div class="card-header">
-            <i class="fas fa-filter me-2"></i>Filter Data
+    <!-- Filter Section -->
+<div class="mb-2 p-2">
+    <form action="{{ route('admin.users') }}" method="GET" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label for="start_date" class="form-label">Dari Tanggal</label>
+            <input type="date" class="form-control form-control-sm shadow-sm border-primary" 
+                   id="start_date" name="start_date" 
+                   value="{{ $startDate ?? '' }}">
         </div>
-        <div class="card-body">
-            <form action="{{ route('admin.answers') }}" method="GET" class="row g-3">
-                <div class="col-md-4">
-                    <label for="start_date" class="form-label">Dari Tanggal</label>
-                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ $startDate ?? '' }}">
-                </div>
-                <div class="col-md-4">
-                    <label for="end_date" class="form-label">Sampai Tanggal</label>
-                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $endDate ?? '' }}">
-                </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary me-2">
-                        <i class="fas fa-search me-1"></i> Filter
-                    </button>
-                    <a href="{{ route('admin.answers') }}" class="btn btn-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> Reset
-                    </a>
-                </div>
-            </form>
+        <div class="col-md-3">
+            <label for="end_date" class="form-label">Sampai Tanggal</label>
+            <input type="date" class="form-control form-control-sm shadow-sm border-primary" 
+                   id="end_date" name="end_date" 
+                   value="{{ $endDate ?? '' }}">
         </div>
-    </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary btn-sm shadow-sm me-2">
+                <i class="fas fa-search me-1"></i> Filter
+            </button>
+            <a href="{{ route('admin.users') }}" class="btn btn-outline-primary btn-sm shadow-sm">
+                <i class="fas fa-sync-alt me-1"></i> Reset
+            </a>
+        </div>
+    </form>
+</div>
 
     @if($users->isEmpty())
     <div class="alert alert-info">
