@@ -8,22 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
-    /**
-     * Show the admin login form.
-     *
-     * @return \Illuminate\View\View
-     */
     public function showLoginForm()
     {
         return view('admin.auth.login');
     }
 
-    /**
-     * Handle an incoming admin authentication request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function login(Request $request)
     {
         $request->validate([
@@ -43,12 +32,6 @@ class AdminAuthController extends Controller
         ])->withInput($request->only('username'));
     }
 
-    /**
-     * Log the admin out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();

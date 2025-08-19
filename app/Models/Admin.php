@@ -19,11 +19,6 @@ class Admin extends Authenticatable
         'email', 
     ];
 
-    /**
-     * Get the username for authentication.
-     *
-     * @return string
-     */
     public function username()
     {
         return 'username';
@@ -34,13 +29,6 @@ class Admin extends Authenticatable
         'remember_token',
     ];
 
-
-    /**
-     * Automatically hash the password when setting it
-     *
-     * @param string $value
-     * @return void
-     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);

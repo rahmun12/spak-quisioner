@@ -9,24 +9,24 @@
     padding: 0;
 }
 
-/* Hero Section fullscreen */
+
 .hero {
     background: url('/images/tugu-malang-bg.jpg') center/cover no-repeat;
     position: relative;
     padding: 100px 20px 150px;
     color: white;
     text-align: center;
-    width: 100%; /* Full width */
+    width: 100%; 
 }
 
-/* Form Container full width tapi tetap center */
+
 .form-container {
     width: 100%;
-    max-width: 100%; /* Hapus pembatas 850px */
+    max-width: 100%; 
     margin: 50px auto 50px;
     background-color: rgba(255, 255, 255, 0.95);
     padding: 40px;
-    border-radius: 0; /* Biar rata layar, bisa diatur kalau mau */
+    border-radius: 0; 
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 

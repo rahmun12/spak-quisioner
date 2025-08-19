@@ -102,7 +102,7 @@
 <div class="container mt-4">
     <h2 class="text-center mb-4">Data Jawaban Kuisioner (Nilai)</h2>
 
-    <!-- Filter Section -->
+   
 <div class="mb-2 p-2">
     <form action="{{ route('admin.users') }}" method="GET" class="row g-2 align-items-end">
         <div class="col-md-3">
@@ -184,7 +184,7 @@
     </div>
     @endforeach
 
-    <!-- Pagination -->
+    
     <div class="mt-4">
         {{ $users->appends(request()->except('page'))->links() }}
     </div>
