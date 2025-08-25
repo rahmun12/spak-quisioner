@@ -230,7 +230,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $counter = ($users->currentPage() - 1) * $users->perPage() + 1; @endphp
+                    @php $counter = 1 + (($users->currentPage() - 1) * $users->perPage()); @endphp
                     @foreach ($users as $user)
                     <tr>
                         <td>{{ $counter++ }}</td>
