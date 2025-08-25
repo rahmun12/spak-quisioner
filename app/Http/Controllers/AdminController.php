@@ -8,23 +8,32 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $startDate = request('start_date');
-        $endDate = request('end_date');
+        $date = request('date');
+        $serviceType = request('service_type');
         
         $query = FormUser::with(['personalData', 'questionnaireAnswers.question', 'questionnaireAnswers.selectedOption']);
         
-        if ($startDate) {
-            $query->whereDate('created_at', '>=', $startDate);
+        // Filter by date if provided
+        if ($date) {
+            $query->whereDate('created_at', $date);
         }
         
-        if ($endDate) {
-            $query->whereDate('created_at', '<=', $endDate);
+        // Filter by service type if provided
+        if ($serviceType) {
+            $query->whereHas('personalData', function($q) use ($serviceType) {
+                $q->where('service_type', $serviceType);
+            });
         }
         
-        $users = $query->orderBy('created_at', 'asc')->paginate(10);
+        $users = $query->orderBy('created_at', 'desc')->paginate(10);
         $questions = \App\Models\Question::with('options')->orderBy('id')->get();
         
-        return view('admin.users', compact('users', 'startDate', 'endDate', 'questions'));
+        return view('admin.users', [
+            'users' => $users,
+            'date' => $date,
+            'serviceType' => $serviceType,
+            'questions' => $questions
+        ]);
     }
 
     public function answers()

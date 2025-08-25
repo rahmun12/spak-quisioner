@@ -25,18 +25,25 @@ class QuestionnaireController extends Controller
     
     public function submit(Request $request, $id)
     {
-        
         $request->validate([
             'answers' => 'required|array',
+            'suggestion' => 'nullable|string|max:1000',
         ]);
 
-        
+        // Save the answers
         foreach ($request->answers as $questionId => $answerId) {
             QuestionnaireAnswer::create([
                 'form_user_id' => $id,
                 'question_id'  => $questionId,
                 'selected_option_id' => $answerId,
             ]);
+        }
+
+        // Save the suggestion if provided
+        if ($request->filled('suggestion')) {
+            $formUser = FormUser::findOrFail($id);
+            $formUser->suggestion = $request->suggestion;
+            $formUser->save();
         }
 
         

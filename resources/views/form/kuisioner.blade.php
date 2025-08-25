@@ -37,6 +37,11 @@
                 <p class="text-muted">Tidak ada pertanyaan tersedia.</p>
                 @endforelse
 
+                <div class="mb-4">
+                    <label for="suggestion" class="form-label fw-bold">Saran dan Keluhan</label>
+                    <textarea class="form-control" id="suggestion" name="suggestion" rows="3" placeholder="Masukkan saran dan keluhan Anda (opsional)"></textarea>
+                </div>
+
                 <div class="text-end">
                     <button type="submit" class="btn btn-success">Kirim Jawaban</button>
                 </div>

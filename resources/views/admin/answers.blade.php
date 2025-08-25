@@ -180,6 +180,15 @@
                 </table>
             </div>
             @endif
+            
+            @if($user->suggestion)
+            <div class="mt-3 pt-3 border-top">
+                <h6 class="fw-bold text-primary">Saran dan Keluhan:</h6>
+                <div class="p-3 bg-light rounded">
+                    {{ $user->suggestion }}
+                </div>
+            </div>
+            @endif
         </div>
     </div>
     @endforeach
