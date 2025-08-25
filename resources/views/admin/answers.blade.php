@@ -171,4 +171,3 @@
     @endif
 </div>
 
-@endsection
