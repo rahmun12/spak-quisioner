@@ -4,25 +4,26 @@
 <style>
     .data-card {
         border: 1px solid #ddd;
-        border-radius: 6px;
+        border-radius: 8px;
         background-color: #fff;
         overflow: hidden;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     }
 
     .data-card-header {
         background-color: #005EB8;
         color: #fff;
-        padding: 10px 15px;
+        padding: 12px 18px;
         font-weight: 600;
+        font-size: 0.95rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .data-card-body {
-        padding: 15px;
+        padding: 18px;
         overflow-x: auto;
     }
 
@@ -35,42 +36,43 @@
     .answer-table th,
     .answer-table td {
         border: 1px solid #dee2e6;
-        padding: 8px 12px;
+        padding: 8px 10px;
         text-align: center;
+        font-size: 0.9rem;
     }
 
     .answer-table th {
-        background-color: #f8f9fa;
+        background-color: #f1f6fa;
         color: #005EB8;
+        font-weight: 600;
         white-space: nowrap;
     }
 
     .answer-value {
-        font-weight: bold;
+        font-weight: 600;
         color: #005EB8;
-        font-size: 0.9rem;
-    }
-
-    .question-number {
-        min-width: 40px;
     }
 
     .no-answers {
         text-align: center;
-        padding: 20px;
+        padding: 25px;
         color: #6c757d;
         font-style: italic;
+        background-color: #f8f9fa;
+        border-radius: 6px;
     }
 
     .pagination {
         justify-content: center;
-        margin-top: 20px;
+        margin-top: 25px;
     }
 
     .page-link {
         color: #005EB8;
         border: 1px solid #dee2e6;
         margin: 0 2px;
+        border-radius: 6px;
+        padding: 5px 10px;
     }
 
     .page-item.active .page-link {
@@ -83,120 +85,100 @@
         background-color: #e9ecef;
     }
 
+    /* Filter Card */
     .filter-card {
-        margin-bottom: 20px;
-    }
-
-    .filter-card .card-header {
-        background-color: #005EB8;
-        color: white;
-        font-weight: 600;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
     .form-label {
         color: #005EB8;
         font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    /* Suggestion Section */
+    .suggestion-box {
+        background: #f8f9fa;
+        border-left: 4px solid #005EB8;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.9rem;
     }
 </style>
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Data Jawaban Kuisioner (Nilai)</h2>
+    <h2 class="text-center mb-4 fw-bold text-primary">Data Jawaban Kuisioner (Nilai)</h2>
 
-   
-<div class="mb-2 p-2">
-    <form action="{{ route('admin.users') }}" method="GET" class="row g-2 align-items-end">
-        <div class="col-md-3">
-            <label for="start_date" class="form-label">Dari Tanggal</label>
-            <input type="date" class="form-control form-control-sm shadow-sm border-primary" 
-                   id="start_date" name="start_date" 
-                   value="{{ $startDate ?? '' }}">
+  
+
+    <!-- Data -->
+    @if($users->isEmpty())
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i> Tidak ada data yang ditemukan untuk filter yang dipilih.
         </div>
-        <div class="col-md-3">
-            <label for="end_date" class="form-label">Sampai Tanggal</label>
-            <input type="date" class="form-control form-control-sm shadow-sm border-primary" 
-                   id="end_date" name="end_date" 
-                   value="{{ $endDate ?? '' }}">
-        </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary btn-sm shadow-sm me-2">
-                <i class="fas fa-search me-1"></i> Filter
-            </button>
-            <a href="{{ route('admin.users') }}" class="btn btn-outline-primary btn-sm shadow-sm">
-                <i class="fas fa-sync-alt me-1"></i> Reset
-            </a>
-        </div>
-    </form>
+    @else
+        @php $counter = ($users->currentPage() - 1) * $users->perPage() + 1; @endphp
+        @foreach($users as $user)
+            <div class="data-card-header d-flex justify-content-between">
+    <div>Nama: {{ $user->name }}</div>
+    <div>Tanggal: {{ $user->created_at->format('d/m/Y') }}</div>
 </div>
 
-    @if($users->isEmpty())
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle me-2"></i> Tidak ada data yang ditemukan untuk filter yang dipilih.
-    </div>
-    @else
-    @php $counter = ($users->currentPage() - 1) * $users->perPage() + 1; @endphp
-    @foreach($users as $user)
-    <div class="data-card">
-        <div class="data-card-header">
-            <span>No: {{ $counter++ }} - Tanggal: {{ $user->created_at->format('d/m/Y H:i') }}</span>
-        </div>
-        <div class="data-card-body">
-            @if($user->questionnaireAnswers->isEmpty())
-            <div class="no-answers">
-                <i class="fas fa-info-circle me-2"></i> Pengguna ini belum mengisi kuisioner.
-            </div>
-            @else
-            <div class="table-responsive">
-                <table class="answer-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            @foreach($questions as $question)
-                            <th>{{ $loop->iteration }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Nilai</strong></td>
-                            @php
-                            // Group answers by question ID for easier access
-                            $answersByQuestion = $user->questionnaireAnswers->keyBy('question_id');
-                            @endphp
-                            @foreach($questions as $question)
-                            <td class="answer-value">
-                                @if(isset($answersByQuestion[$question->id]))
-                                @php
-                                $answerText = $answersByQuestion[$question->id]->selectedOption->option_text;
-                                $value = $answerValues[$answerText] ?? '-';
-                                @endphp
-                                {{ $value }}
-                                @else
-                                -
-                                @endif
-                            </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            @endif
-            
-            @if($user->suggestion)
-            <div class="mt-3 pt-3 border-top">
-                <h6 class="fw-bold text-primary">Saran dan Keluhan:</h6>
-                <div class="p-3 bg-light rounded">
-                    {{ $user->suggestion }}
+
+                <div class="data-card-body">
+                    @if($user->questionnaireAnswers->isEmpty())
+                        <div class="no-answers">
+                            <i class="fas fa-info-circle me-2"></i> Pengguna ini belum mengisi kuisioner.
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="answer-table">
+                                <tbody>
+                                    <tr>
+                                        @php
+                                            $answersByQuestion = $user->questionnaireAnswers->keyBy('question_id');
+                                        @endphp
+                                        @foreach($questions as $question)
+                                            <td class="answer-value">
+                                                @if(isset($answersByQuestion[$question->id]))
+                                                    @php
+                                                        $answerText = $answersByQuestion[$question->id]->selectedOption->option_text;
+                                                        $value = $answerValues[$answerText] ?? '-';
+                                                    @endphp
+                                                    {{ $value }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+
+                    @if($user->suggestion)
+                        <div class="mt-3 pt-2 border-top">
+                            <h6 class="fw-bold text-primary">💬 Saran dan Keluhan:</h6>
+                            <div class="suggestion-box">
+                                {{ $user->suggestion }}
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
-            @endif
-        </div>
-    </div>
-    @endforeach
+        @endforeach
 
-    
-    <div class="mt-4">
-        {{ $users->appends(request()->except('page'))->links() }}
-    </div>
+        <!-- Pagination -->
+        <div class="mt-4">
+            {{ $users->appends(request()->except('page'))->links() }}
+        </div>
     @endif
 </div>
 
