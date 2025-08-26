@@ -5,7 +5,7 @@
     <title>Kuisioner</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Bootstrap & Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
 
     <style>
         body {
-    font-family: 'Roboto', sans-serif;
-}
+            font-family: 'Roboto', sans-serif;
+        }
 
 
         .navbar-custom {
@@ -50,12 +50,15 @@
             border: none;
             padding: 6px 20px;
             border-radius: 12px;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .login-btn:hover {
-            background-color: #00439b;
+            background-color: #ffffff;
+            color: #005EB8;
+            border: 1px solid #005EB8;
         }
+
 
         @media (max-width: 991.98px) {
             .navbar-nav {
@@ -69,45 +72,42 @@
 
 <body>
 
-    {{-- Navbar hanya muncul jika bukan di halaman login/register admin --}}
+
     @if (!request()->is('admin/login*') && !request()->is('admin/register*'))
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
-        <div class="container">
-            <div class="d-flex align-items-center">
-                <img src="{{ asset('images/pemkot.png') }}" alt="Pemkot Logo" class="logo-img">
-                <img src="{{ asset('images/bapenda.png') }}" alt="Bapenda Logo" class="logo-img">
-            </div>
+        <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
+            <div class="container">
+                <div class="d-flex align-items-center">
+                    <img src="{{ asset('images/pemkot.png') }}" alt="Pemkot Logo" class="logo-img">
+                    <img src="{{ asset('images/bapenda.png') }}" alt="Bapenda Logo" class="logo-img">
+                </div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('landing') ? 'active' : '' }}"
-                            href="{{ route('landing') }}">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('data.form') ? 'active' : '' }}"
-                            href="{{ route('data.form') }}">Data Diri</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Kuisioner</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.login') }}" class="btn login-btn ms-2">LOGIN</a>
-                    </li>
-                </ul>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('landing') ? 'active' : '' }}"
+                                href="{{ route('landing') }}">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('data.form') ? 'active' : '' }}"
+                                href="{{ route('data.form') }}">Data Diri</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#">Kuisioner</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.login') }}" class="btn login-btn ms-2">LOGIN</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
     @endif
 
-    <!-- Konten -->
     <div class="container mt-4">
         @yield('content')
     </div>
