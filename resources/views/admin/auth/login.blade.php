@@ -173,10 +173,7 @@
                        name="password" placeholder="Masukkan password" required>
             </div>
 
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                <label class="form-check-label" for="remember">Ingat saya</label>
-            </div>
+           
 
             <div class="d-grid">
                 <button type="submit" class="btn btn-login">Masuk</button>

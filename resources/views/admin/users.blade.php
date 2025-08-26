@@ -27,30 +27,24 @@
         text-align: center;
     }
 
-    .col-no {
-        width: 60px;
-    }
+    .col-no { width: 60px; }
+    .col-nama { width: 180px; }
+    .col-tanggal { width: 120px; }
+    .col-aksi { width: 80px; text-align: center; }
 
-    .col-nama {
-        width: 180px;
-    }
-
-    .col-tanggal {
-        width: 120px;
-    }
-
-    .col-aksi {
-        width: 80px;
-        text-align: center;
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f8faff;
-    }
-
+    .table-striped tbody tr:nth-of-type(odd) { background-color: #f8faff; }
     .table-hover tbody tr:hover {
         background-color: #eef6ff;
         transition: background 0.2s ease-in-out;
+    }
+
+    /* ===== JUDUL ===== */
+    .page-title {
+        font-weight: 700;
+        color: #000; /* hitam sesuai permintaan */
+        margin-bottom: 35px; /* beri jarak dengan tabel */
+        text-align: center;
+        letter-spacing: 0.5px;
     }
 
     /* ===== BUTTON AKSI ===== */
@@ -68,55 +62,42 @@
         transition: all 0.2s ease-in-out;
         font-size: 0.95rem;
     }
-
     .btn-action:hover {
         background: #005EB8;
         border-color: #005EB8;
         transform: scale(1.05);
         color: #fff !important;
-        /* ikon jadi putih */
     }
 
     /* ===== DROPDOWN ===== */
-    .dropdown-toggle::after {
-        display: none;
-    }
-
+    .dropdown-toggle::after { display: none; }
     .dropdown-menu {
         border-radius: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         font-size: 0.85rem;
         z-index: 2000;
     }
-
     .dropdown-item {
         padding: 8px 12px;
         border-radius: 6px;
         transition: background 0.2s ease-in-out;
     }
-
     .dropdown-item:hover {
         background: #eef6ff;
         color: #005EB8;
     }
 
     /* ===== PAGINATION ===== */
-    .pagination {
-        justify-content: center;
-        margin-top: 20px;
-    }
-
+    .pagination { justify-content: center; margin-top: 20px; }
     .page-link {
         color: #005EB8;
         border: 1px solid #dee2e6;
         margin: 0 2px;
     }
-
     .page-item.active .page-link {
         background-color: #005EB8;
         border-color: #005EB8;
     }
-
     .page-link:hover {
         color: #005EB8;
         background-color: #e9ecef;
@@ -131,41 +112,28 @@
         max-width: 750px;
         margin: auto;
     }
-
     .detail-table th {
         padding: 4px 6px;
         font-size: 0.8rem;
         font-weight: 600;
         text-align: left;
     }
-
-    .detail-table td {
-        padding: 4px 6px;
-        vertical-align: middle;
-    }
-
+    .detail-table td { padding: 4px 6px; vertical-align: middle; }
     .detail-table thead.table-primary th {
         background-color: #005EB8;
         color: #fff;
     }
-
     .detail-table thead.table-secondary th {
         background-color: #f1f3f5;
         color: #333;
     }
-
-    .detail-table tbody tr:nth-of-type(odd) {
-        background-color: #fafbfc;
-    }
-
-    .detail-table tbody tr:hover {
-        background-color: #f2f9ff;
-    }
+    .detail-table tbody tr:nth-of-type(odd) { background-color: #fafbfc; }
+    .detail-table tbody tr:hover { background-color: #f2f9ff; }
 </style>
 
-
 <div class="container mt-4">
-    <h2 class="text-center">Data & Jawaban Kuisioner</h2>
+    <h2 class="page-title">Data & Jawaban Kuisioner</h2>
+
 
     <!-- Filter -->
     <div class="mb-2 p-2">
@@ -177,13 +145,14 @@
             </div>
             <div class="col-md-3">
                 <label for="service_type" class="form-label">Jenis Layanan</label>
-                <select class="form-select form-select-sm shadow-sm border-primary" id="service_type" name="service_type">
-                    <option value="">Semua Layanan</option>
-                    <option value="PBB" {{ request('service_type') == 'PBB' ? 'selected' : '' }}>PBB (Pajak Bumi dan Bangunan)</option>
-                    <option value="Pajak Hotel" {{ request('service_type') == 'Pajak Hotel' ? 'selected' : '' }}>Pajak Hotel</option>
-                    <option value="Pajak Parkir" {{ request('service_type') == 'Pajak Parkir' ? 'selected' : '' }}>Pajak Parkir</option>
-                    <option value="Pajak Restoran" {{ request('service_type') == 'Pajak Restoran' ? 'selected' : '' }}>Pajak Restoran</option>
-                </select>
+<select class="form-select form-select-sm shadow-sm border-primary" id="service_type" name="service_type">
+    <option value="" disabled {{ request('service_type') == '' ? 'selected' : '' }}>Semua Layanan</option>
+    <option value="PBB" {{ request('service_type') == 'PBB' ? 'selected' : '' }}>PBB (Pajak Bumi dan Bangunan)</option>
+    <option value="Pajak Hotel" {{ request('service_type') == 'Pajak Hotel' ? 'selected' : '' }}>Pajak Hotel</option>
+    <option value="Pajak Parkir" {{ request('service_type') == 'Pajak Parkir' ? 'selected' : '' }}>Pajak Parkir</option>
+    <option value="Pajak Restoran" {{ request('service_type') == 'Pajak Restoran' ? 'selected' : '' }}>Pajak Restoran</option>
+</select>
+
             </div>
             <div class="col-md-3">
                 <button type="submit" class="btn btn-primary btn-sm shadow-sm me-2">
