@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserExportController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\AdminRegisterController;
@@ -54,5 +55,10 @@ Route::prefix('admin')->group(function () {
             
         Route::delete('/users/{id}', [AdminController::class, 'destroy'])
             ->name('admin.users.destroy');
+            
+        Route::get('/users/export', [UserExportController::class, 'export'])
+            ->name('admin.users.export');
     });
+
+    
 });

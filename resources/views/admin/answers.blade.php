@@ -129,7 +129,21 @@
     </style>
 
     <div class="container mt-4">
-        <h2 class="page-title">Data Jawaban Kuisioner (Nilai)</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="page-title mb-0">Data Jawaban Kuisioner (Nilai)</h2>
+            <form action="{{ route('admin.answers') }}" method="GET" class="d-inline">
+                @if(request('start_date'))
+                    <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                @endif
+                @if(request('end_date'))
+                    <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+                @endif
+                <input type="hidden" name="export" value="excel">
+                <button type="submit" class="btn btn-success btn-sm shadow-sm">
+                    <i class="fas fa-file-excel me-1"></i> Export Excel
+                </button>
+            </form>
+        </div>
 
         @if ($users->isEmpty())
             <div class="alert-custom text-center">

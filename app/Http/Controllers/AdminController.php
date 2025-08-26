@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormUser;
+use App\Exports\AnswersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -40,6 +42,7 @@ class AdminController extends Controller
     {
         $startDate = request('start_date');
         $endDate = request('end_date');
+        $export = request('export') === 'excel';
 
         $query = FormUser::with(['questionnaireAnswers.question', 'questionnaireAnswers.selectedOption']);
 
@@ -51,9 +54,6 @@ class AdminController extends Controller
             $query->whereDate('created_at', '<=', $endDate);
         }
 
-        $users = $query->orderBy('created_at', 'asc')->paginate(10);
-
-
         $answerValues = [
             'Tidak Pernah' => 4,
             'Kadang-kadang' => 3,
@@ -61,9 +61,14 @@ class AdminController extends Controller
             'Selalu' => 1
         ];
 
-
         $questions = \App\Models\Question::orderBy('id')->get();
 
+        if ($export) {
+            $users = $query->orderBy('created_at', 'asc')->get();
+            return Excel::download(new AnswersExport($users, $questions, $answerValues), 'data-jawaban-kuisioner-' . now()->format('Y-m-d') . '.xlsx');
+        }
+
+        $users = $query->orderBy('created_at', 'asc')->paginate(10);
         return view('admin.answers', compact('users', 'startDate', 'endDate', 'answerValues', 'questions'));
     }
 
