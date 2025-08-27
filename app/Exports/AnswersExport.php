@@ -59,7 +59,7 @@ class AnswersExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
 
         // Add answers for each question
         $answersByQuestion = $user->questionnaireAnswers->keyBy('question_id');
-        
+
         foreach ($this->questions as $question) {
             if (isset($answersByQuestion[$question->id])) {
                 $answerText = $answersByQuestion[$question->id]->selectedOption->option_text;
@@ -101,7 +101,7 @@ class AnswersExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     {
         $lastColumn = $sheet->getHighestColumn();
         $lastRow = $sheet->getHighestRow();
-        
+
         // Style for header row (row 1)
         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
             'font' => [
