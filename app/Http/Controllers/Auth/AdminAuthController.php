@@ -5,11 +5,20 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminAuthController extends Controller
 {
     public function showLoginForm()
     {
+        // Debug: Log that we're trying to show the login form
+        Log::info('Showing login form');
+        
+        // Debug: Check if we can access the view
+        if (!view()->exists('admin.auth.login')) {
+            Log::error('Login view not found at: ' . resource_path('views/admin/auth/login.blade.php'));
+        }
+        
         return view('admin.auth.login');
     }
 
