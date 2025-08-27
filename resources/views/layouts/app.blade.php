@@ -10,12 +10,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-
     <style>
         body {
             font-family: 'Roboto', sans-serif;
         }
-
 
         .navbar-custom {
             background-color: #8ED3F5;
@@ -59,7 +57,6 @@
             border: 1px solid #005EB8;
         }
 
-
         @media (max-width: 991.98px) {
             .navbar-nav {
                 background-color: #87CEEB;
@@ -71,7 +68,6 @@
 </head>
 
 <body>
-
 
     @if (!request()->is('admin/login*') && !request()->is('admin/register*'))
         <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
@@ -108,12 +104,16 @@
         </nav>
     @endif
 
-    <div class="container mt-4">
+    {{-- 🔹 Kondisi: kalau halaman punya section fullpage, tidak pakai container --}}
+    @if (View::hasSection('fullpage'))
         @yield('content')
-    </div>
+    @else
+        <div class="container mt-4">
+            @yield('content')
+        </div>
+    @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 
 </html>
