@@ -1,11 +1,36 @@
 @extends('layouts.admin')
 
 @section('content')
+   @extends('layouts.admin')
+
+@section('content')
     <style>
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* ===== BUTTON EXCEL ===== */
+        .btn-excel {
+            background-color: #217346; /* hijau Excel */
+            color: #fff !important;
+            font-weight: 600;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-excel:hover {
+            background-color: #1a5b34;
+            transform: scale(1.05);
+            color: #fff !important;
+        }
+
+        .btn-excel i {
+            font-size: 1rem;
+        }
+
+        /* ===== TABEL & STYLE LAIN ===== */
         .table {
             width: 100%;
             border-collapse: collapse;
@@ -15,7 +40,6 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
         .table thead th {
             background-color: #005EB8;
             color: #fff;
@@ -25,7 +49,6 @@
             border: none;
             letter-spacing: 0.5px;
         }
-
         .table tbody td {
             padding: 12px 14px;
             vertical-align: middle;
@@ -33,43 +56,16 @@
             text-align: center;
             font-size: 0.88rem;
         }
+        .col-no { width: 60px; font-weight: 500; }
+        .col-nama { min-width: 200px; text-align: left !important; padding-left: 15px !important; font-weight: 500; }
+        .col-tanggal { width: 150px; font-weight: 500; }
 
-        .col-no {
-            width: 60px;
-            font-weight: 500;
-        }
+        .table-striped tbody tr:nth-of-type(odd) { background-color: #f9fbff; }
+        .table-hover tbody tr:hover { background-color: #eef5ff; transition: background 0.2s ease-in-out; }
 
-        .col-nama {
-            min-width: 200px;
-            text-align: left !important;
-            padding-left: 15px !important;
-            font-weight: 500;
-        }
+        .answer-value { font-weight: 600; color: #005EB8; }
 
-        .col-tanggal {
-            width: 150px;
-            font-weight: 500;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f9fbff;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #eef5ff;
-            transition: background 0.2s ease-in-out;
-        }
-
-        .answer-value {
-            font-weight: 600;
-            color: #005EB8;
-        }
-
-        .pagination {
-            justify-content: center;
-            margin-top: 25px;
-        }
-
+        .pagination { justify-content: center; margin-top: 25px; }
         .page-link {
             color: #005EB8;
             border: 1px solid #dee2e6;
@@ -79,17 +75,8 @@
             font-size: 0.85rem;
             font-weight: 500;
         }
-
-        .page-item.active .page-link {
-            background-color: #005EB8;
-            border-color: #005EB8;
-            color: #fff;
-        }
-
-        .page-link:hover {
-            color: #003366;
-            background-color: #eaf2fb;
-        }
+        .page-item.active .page-link { background-color: #005EB8; border-color: #005EB8; color: #fff; }
+        .page-link:hover { color: #003366; background-color: #eaf2fb; }
 
         .suggestion-box {
             background: #f8f9fa;
@@ -139,11 +126,12 @@
                     <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                 @endif
                 <input type="hidden" name="export" value="excel">
-                <button type="submit" class="btn btn-success btn-sm shadow-sm">
+                <button type="submit" class="btn btn-excel btn-sm shadow-sm">
                     <i class="fas fa-file-excel me-1"></i> Export Excel
                 </button>
             </form>
         </div>
+
 
         @if ($users->isEmpty())
             <div class="alert-custom text-center">

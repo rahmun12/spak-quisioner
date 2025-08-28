@@ -6,14 +6,14 @@
     <title>Admin Panel - Kuisioner</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        /* Font Roboto hanya untuk navbar */
+        .navbar-custom,
+        .navbar-custom .nav-link,
+        .navbar-custom .logout-btn {
             font-family: 'Roboto', sans-serif;
         }
 
@@ -59,9 +59,7 @@
             border: 1px solid #005EB8;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 94, 184, 0.25);
-
         }
-
 
         @media (max-width: 991.98px) {
             .navbar-nav {
@@ -71,7 +69,6 @@
             }
         }
     </style>
-
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -114,7 +111,6 @@
             </div>
         </div>
     </nav>
-
 
     <div class="container mt-4">
         @yield('content')

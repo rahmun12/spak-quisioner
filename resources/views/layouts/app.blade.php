@@ -11,12 +11,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        /* Navbar konsisten pakai Roboto */
+        .navbar-custom,
+        .navbar-custom .nav-link,
+        .navbar-custom .login-btn {
             font-family: 'Roboto', sans-serif;
         }
 
         .navbar-custom {
-            background-color: #8ED3F5;
+            background-color: #8ed3f5;
             padding: 0.7rem 1rem;
         }
 

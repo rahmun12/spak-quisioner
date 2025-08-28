@@ -2,7 +2,7 @@
 
 @section('content')
 <style>
-    /* ===== TABEL UTAMA ===== */
+   
     .table {
         width: 100%;
         border-collapse: collapse;
@@ -53,7 +53,7 @@
         transition: background 0.2s ease-in-out;
     }
 
-    /* ===== BUTTON AKSI ===== */
+   
     .btn-action {
         background: #f8f9fa;
         border: 1px solid #dee2e6;
@@ -74,10 +74,10 @@
         border-color: #005EB8;
         transform: scale(1.05);
         color: #fff !important;
-        /* ikon jadi putih */
+        
     }
 
-    /* ===== DROPDOWN ===== */
+   
     .dropdown-toggle::after {
         display: none;
     }
@@ -100,7 +100,7 @@
         color: #005EB8;
     }
 
-    /* ===== PAGINATION ===== */
+   
     .pagination {
         justify-content: center;
         margin-top: 20px;
@@ -122,7 +122,7 @@
         background-color: #e9ecef;
     }
 
-    /* ===== TABEL DETAIL ===== */
+    
     .detail-table {
         font-size: 0.8rem;
         border-radius: 6px;
@@ -161,16 +161,37 @@
     .detail-table tbody tr:hover {
         background-color: #f2f9ff;
     }
+
+     
+    .btn-excel {
+        background-color: #217346; /* hijau khas Excel */
+        color: #fff !important;
+        font-weight: 600;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-excel:hover {
+        background-color: #1a5b34;
+        transform: scale(1.05);
+        color: #fff !important;
+    }
+
+    .btn-excel i {
+        font-size: 1rem;
+    }
 </style>
 
 
 <div class="container mt-4">
     <h2 class="text-center">Data & Jawaban Kuisioner</h2>
-    <a href="{{ route('admin.users.export') }}" class="btn btn-success btn-sm shadow-sm ms-2">
+    <a href="{{ route('admin.users.export') }}" class="btn btn-excel btn-sm shadow-sm ms-2">
         <i class="fas fa-file-excel me-1"></i> Export Excel
     </a>
 
-    <!-- Filter -->
+    
     <div class="mb-2 p-2">
         <form action="{{ route('admin.users') }}" method="GET" class="row g-2 align-items-end">
             <div class="col-md-3">
@@ -199,7 +220,7 @@
         </form>
     </div>
 
-    <!-- Notifikasi -->
+   
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -214,7 +235,7 @@
     </div>
     @endif
 
-    <!-- Tabel -->
+   
     @if($users->isEmpty())
     <div class="alert alert-info">
         <i class="fas fa-info-circle me-2"></i> Tidak ada data yang ditemukan untuk filter yang dipilih.
@@ -256,7 +277,7 @@
                         </td>
                     </tr>
 
-                    <!-- Detail Row -->
+                   
                     <tr class="collapse bg-light" id="detailRow{{ $user->id }}">
                         <td colspan="4">
                             <div class="table-responsive my-2">
@@ -354,14 +375,14 @@
             </table>
         </div>
 
-        <!-- Pagination -->
+       
         <div class="p-3">
             {{ $users->appends(request()->except('page'))->links() }}
         </div>
     </div>
     @endif
 
-    <!-- Modal Hapus -->
+    
     @foreach ($users as $user)
     <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
