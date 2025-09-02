@@ -85,33 +85,114 @@
 
         
 
-        /* Hero box tambahan di atas bp-bg */
+        /* Box for Score and Interpretation */
         .bp-hero-box {
             position: absolute;
-            top: 50%;
+            top: 20%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             background: #8ED3F5;
-            padding: 100px;
-            border-radius: 25px;
-            max-width: 800px;
-            width: 90%;
+            padding: 30px 40px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 700px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
             z-index: 2;
         }
 
-        .bp-hero-box h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 15px;
+        /* Box for Score Scale */
+        .score-scale-box {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 25px 40px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 700px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+            margin-top: 20px;
         }
 
-        .bp-hero-box p {
-            font-size: 1rem;
-            font-weight: 400;
+        .score-scale-box h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .score-display h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
             color: #fff;
+            margin: 0 0 10px 0;
+            line-height: 1;
+        }
+
+        .score-display p {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .scale-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .scale-item {
+            flex: 1 1 45%;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .scale-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .scale-range {
+            font-weight: 600;
+            color: #333;
+            margin-right: 15px;
+            min-width: 100px;
+        }
+
+        .scale-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .interpretation {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .interpretation p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #fff;
+            margin: 0;
+        }
+
+        .interpretation p strong {
+            color: #fff;
+            font-weight: 600;
         }
     </style>
 
@@ -133,10 +214,45 @@
     <div class="bp-section">
         <img src="{{ asset('images/bp-bg.png') }}" alt="BP Background">
 
-        <!-- Hero box baru di atas bp-bg -->
+        <!-- Box for Score and Interpretation -->
         <div class="bp-hero-box">
-            <h2>80,00%</h2>
-            <p>Presentase Nilai Keseluruhan</p>
+            <div class="score-display">
+                <h2>{{ number_format($averageScore, 2) }}</h2>
+                <p>Nilai Rata-rata Keseluruhan</p>
+                
+                <!-- Interpretasi Hasil -->
+                <div class="interpretation">
+                    <p>Berdasarkan hasil penilaian, kualitas pelayanan Bapenda Kota Malang saat ini berada pada kategori <strong>{{ $scoreCategory['name'] }}</strong>.</p>
+                    <p class="mt-2">{{ $scoreCategory['description'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Box for Score Scale -->
+        <div class="score-scale-box">
+            <h3>Skala Penilaian</h3>
+            <div class="scale-items">
+                <div class="scale-item">
+                    <span class="scale-color" style="background-color: #28a745;"></span>
+                    <span class="scale-range">4.51 - 5.00</span>
+                    <span class="scale-label">Sangat Baik</span>
+                </div>
+                <div class="scale-item">
+                    <span class="scale-color" style="background-color: #17a2b8;"></span>
+                    <span class="scale-range">3.51 - 4.50</span>
+                    <span class="scale-label">Baik</span>
+                </div>
+                <div class="scale-item">
+                    <span class="scale-color" style="background-color: #ffc107;"></span>
+                    <span class="scale-range">2.51 - 3.50</span>
+                    <span class="scale-label">Cukup</span>
+                </div>
+                <div class="scale-item">
+                    <span class="scale-color" style="background-color: #dc3545;"></span>
+                    <span class="scale-range">1.00 - 2.50</span>
+                    <span class="scale-label">Kurang</span>
+                </div>
+            </div>
         </div>
     </div>
     @include('layouts.footerU')

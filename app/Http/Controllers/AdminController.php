@@ -77,11 +77,8 @@ class AdminController extends Controller
         try {
             $user = FormUser::findOrFail($id);
 
-
             $user->personalData()->delete();
             $user->questionnaireAnswers()->delete();
-
-
             $user->delete();
 
             return redirect()->route('admin.users')
@@ -89,6 +86,74 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('admin.users')
                 ->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Calculate average score for all answers
+     */
+    public function getAverageScore()
+    {
+        $answerValues = [
+            'Tidak Pernah' => 4,
+            'Kadang-kadang' => 3,
+            'Sering' => 2,
+            'Selalu' => 1
+        ];
+
+        $totalScore = 0;
+        $totalResponses = 0;
+
+        // Get all answers
+        $answers = \App\Models\QuestionnaireAnswer::with('selectedOption')->get();
+
+        foreach ($answers as $answer) {
+            if (isset($answerValues[$answer->selectedOption->option_text])) {
+                $totalScore += $answerValues[$answer->selectedOption->option_text];
+                $totalResponses++;
+            }
+        }
+
+        // Calculate average score (raw average, not percentage)
+        $average = $totalResponses > 0 
+            ? $totalScore / $totalResponses 
+            : 0;
+
+        // Round to 2 decimal places
+        $average = round($average, 2);
+
+        // Determine category based on the 1-4 scale
+        $category = $this->getScoreCategory($average);
+
+        return [
+            'average' => $average,
+            'category' => $category
+        ];
+    }
+
+    
+    protected function getScoreCategory($score)
+    {
+        if ($score >= 4.51) {
+            return [
+                'name' => 'Sangat Baik',
+                'description' => 'Kualitas pelayanan sangat memuaskan dan melebihi harapan.'
+            ];
+        } elseif ($score >= 3.51) {
+            return [
+                'name' => 'Baik',
+                'description' => 'Kualitas pelayanan baik dan memenuhi harapan.'
+            ];
+        } elseif ($score >= 2.51) {
+            return [
+                'name' => 'Cukup',
+                'description' => 'Kualitas pelayanan cukup, namun perlu peningkatan.'
+            ];
+        } else {
+            return [
+                'name' => 'Kurang',
+                'description' => 'Kualitas pelayanan perlu ditingkatkan.'
+            ];
         }
     }
 }
