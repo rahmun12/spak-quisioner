@@ -13,7 +13,24 @@ class AdminController extends Controller
         $date = request('date');
         $serviceType = request('service_type');
 
+        // Get total users who have filled out the questionnaire
+        $totalRespondents = FormUser::has('questionnaireAnswers')->count();
+
         $query = FormUser::with(['personalData', 'questionnaireAnswers.question', 'questionnaireAnswers.selectedOption']);
+
+        // For dashboard view
+        if (request()->routeIs('admin.dashboard')) {
+            $totalQuestionnaires = FormUser::has('questionnaireAnswers')->count();
+            
+            // Get average score using the same method as landing page
+            $scoreData = $this->getAverageScore();
+            
+            return view('admin.dashboard', [
+                'totalRespondents' => $totalRespondents,
+                'totalQuestionnaires' => $totalQuestionnaires,
+                'averageScore' => $scoreData['average']
+            ]);
+        }
 
         // Filter by date if provided
         if ($date) {
@@ -115,8 +132,8 @@ class AdminController extends Controller
         }
 
         // Calculate average score (raw average, not percentage)
-        $average = $totalResponses > 0 
-            ? $totalScore / $totalResponses 
+        $average = $totalResponses > 0
+            ? $totalScore / $totalResponses
             : 0;
 
         // Round to 2 decimal places
@@ -131,7 +148,7 @@ class AdminController extends Controller
         ];
     }
 
-    
+
     protected function getScoreCategory($score)
     {
         if ($score >= 4.51) {
