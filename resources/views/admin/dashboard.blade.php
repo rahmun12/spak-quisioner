@@ -10,63 +10,97 @@
     .dashboard-title {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #005EB8;
+        color: #000000;
         margin-bottom: 40px;
         text-align: center;
-        position: relative;
     }
 
-    .dashboard-title::after {
-        content: '';
-        display: block;
-        width: 80px;
-        height: 4px;
-        background: #005EB8;
-        margin: 12px auto 0;
-        border-radius: 2px;
-    }
-
+    /* Card Style */
     .card-stat {
-        background: linear-gradient(145deg, #ffffff, #f1f5fa);
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        background: #fff;
         border-radius: 20px;
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        padding: 35px;
+        text-align: left;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        margin-bottom: 25px;
+        width: 100%;
+        min-height: 130px;
     }
 
     .card-stat:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     }
 
-    .card-stat i {
-        font-size: 2.5rem;
-        color: #005EB8;
-        margin-bottom: 15px;
+    /* Icon Circle */
+    .icon-box {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 2rem;
+        position: relative;
+        overflow: hidden;
     }
 
-    .card-stat h3 {
-        font-size: 1.8rem;
+    /* Warna background */
+    .icon-users { background: linear-gradient(135deg, #005EB8, #8ED3F5); }
+    .icon-file  { 
+        background: linear-gradient(270deg, #8ED3F5, #005EB8, #8ED3F5); 
+        background-size: 400% 400%;
+        animation: wave 6s ease infinite;
+    }
+    .icon-star  { background: linear-gradient(135deg, #ffb400, #ffdd80); }
+
+    /* Warna & animasi ikon */
+    .icon-box i {
+        position: relative;
+        z-index: 1;
+    }
+    .icon-users i { color: #fff; animation: pulse 2s infinite; }
+    .icon-file i  { color: #fff; animation: bounce 2s infinite; }
+    .icon-star i  { color: #333; animation: spin 4s linear infinite; }
+
+    /* Animasi */
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+
+    @keyframes wave {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
+
+    .card-content h3 {
+        font-size: 2rem;
         font-weight: bold;
-        color: #333;
         margin-bottom: 8px;
+        color: #111;
     }
 
-    .card-stat p {
-        font-size: 1.1rem;
-        color: #666;
-    }
-
-    .chart-container {
-        margin-top: 50px;
-    }
-
-    canvas {
-        background: #fff;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    .card-content p {
+        font-size: 1.2rem;
+        color: #555;
+        margin: 0;
     }
 </style>
 
@@ -74,91 +108,44 @@
     <h1 class="dashboard-title">Dashboard Admin</h1>
 
     <div class="row g-4">
-        <div class="col-md-4">
+        <div class="col-12">
             <div class="card-stat">
-                <i class="fas fa-users"></i>
-                <h3>{{ number_format($totalRespondents) }}</h3>
-                <p>Total Responden Kuisioner</p>
+                <div class="icon-box icon-users">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-content">
+                    <h3>{{ number_format($totalRespondents) }}</h3>
+                    <p>Total Responden Kuisioner</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card-stat">
-                <i class="fas fa-file-alt"></i>
-                <h3>{{ number_format($totalQuestionnaires) }}</h3>
-                <p>Kuisioner Masuk</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card-stat">
-                <i class="fas fa-star"></i>
-                <h3>{{ number_format($averageScore, 2, ',', '.') }}</h3>
-                <p>Rata-rata Nilai</p>
-            </div>
-        </div>
-    </div>
 
-    Grafik
-    <div class="row chart-container">
-        <div class="col-md-8">
-            <canvas id="userChart" height="120"></canvas>
+        <div class="col-12">
+            <div class="card-stat">
+                <div class="icon-box icon-file">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="card-content">
+                    <h3>{{ number_format($totalQuestionnaires) }}</h3>
+                    <p>Kuisioner Masuk</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <canvas id="questionnaireChart" height="120"></canvas>
+
+        <div class="col-12">
+            <div class="card-stat">
+                <div class="icon-box icon-star">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="card-content">
+                    <h3>{{ number_format($averageScore, 2, ',', '.') }}</h3>
+                    <p>Rata-rata Nilai</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- FontAwesome -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    // Line Chart - Perkembangan Pengguna
-    const ctx1 = document.getElementById('userChart').getContext('2d');
-    new Chart(ctx1, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-            datasets: [{
-                label: 'Jumlah Pengguna',
-                data: [50, 70, 90, 120, 150, 180],
-                borderColor: '#005EB8',
-                backgroundColor: 'rgba(0, 94, 184, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true
-                }
-            }
-        }
-    });
-
-    // Pie Chart - Kuisioner
-    const ctx2 = document.getElementById('questionnaireChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'pie',
-        data: {
-            labels: ['Selesai', 'Belum'],
-            datasets: [{
-                data: [45, 15],
-                backgroundColor: ['#005EB8', '#ddd']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }
-    });
-</script>
+<!-- FontAwesome (lebih stabil) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 @endsection

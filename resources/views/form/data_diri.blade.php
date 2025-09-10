@@ -5,20 +5,7 @@
         body {
             background-color: #F2F5F7;
             font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
         }
-
-
-        .hero {
-            background: url('/images/tugu-malang-bg.jpg') center/cover no-repeat;
-            position: relative;
-            padding: 100px 20px 150px;
-            color: white;
-            text-align: center;
-            width: 100%;
-        }
-
 
         .form-container {
             width: 100%;
@@ -43,15 +30,13 @@
             }
         }
 
-
         .form-title {
             text-align: center;
             font-weight: 700;
             color: #000;
             margin-bottom: 30px;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
-
 
         .form-label {
             font-weight: 500;
@@ -74,7 +59,6 @@
             box-shadow: 0 0 0 0.2rem rgba(0, 94, 184, 0.15);
         }
 
-
         .btn-primary {
             background-color: #005EB8;
             border: none;
@@ -90,7 +74,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 94, 184, 0.25);
         }
-
 
         .alert-success {
             background-color: #e6f7ff;
@@ -121,8 +104,16 @@
                     <input type="text" class="form-control" id="full_name" name="full_name" required>
                 </div>
                 <div class="col-md-6">
-                    <label for="age" class="form-label">Umur</label>
-                    <input type="text" class="form-control" id="age" name="age" required>
+                    <label for="age" class="form-label">Usia</label>
+                    <select class="form-select" id="age" name="age" required>
+                        <option value="" disabled selected hidden>Pilih Usia</option>
+                        <option value="10-12">10 - 12 tahun</option>
+                        <option value="13-17">13 - 17 tahun</option>
+                        <option value="18-24">18 - 24 tahun</option>
+                        <option value="25-39">25 - 39 tahun</option>
+                        <option value="40-54">40 - 54 tahun</option>
+                        <option value="55-69">55 - 69 tahun</option>
+                    </select>
                 </div>
             </div>
 
@@ -149,11 +140,36 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="education" class="form-label">Pendidikan</label>
-                    <input type="text" class="form-control" id="education" name="education" required>
+                    <select class="form-select" id="education" name="education" required>
+                        <option value="" disabled selected hidden>Pilih Pendidikan</option>
+                        <option value="SD / Tidak Tamat">SD / Tidak Tamat</option>
+                        <option value="SD / MI">SD / MI</option>
+                        <option value="SMP / MTS">SMP / MTS</option>
+                        <option value="SMA / SMK / MA">SMA / SMK / MA</option>
+                        <option value="Diploma - D1/D2/D3">Diploma - D1/D2/D3</option>
+                        <option value="Sarjana - D4/S1">Sarjana - D4/S1</option>
+                        <option value="Magister - S2">Magister - S2</option>
+                        <option value="Doktor - S3">Doktor - S3</option>
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="occupation" class="form-label">Pekerjaan</label>
-                    <input type="text" class="form-control" id="occupation" name="occupation" required>
+                    <select class="form-select" id="occupation" name="occupation" required>
+                        <option value="" disabled selected hidden>Pilih Pekerjaan</option>
+                        <option value="Pelajar">Pelajar</option>
+                        <option value="Mahasiswa">Mahasiswa</option>
+                        <option value="Pegawai Negeri / ASN (Selain Guru/Dosen)">Pegawai Negeri / ASN (Selain Guru/Dosen)</option>
+                        <option value="Pegawai Swasta">Pegawai Swasta</option>
+                        <option value="Pengusaha/Pedagang">Pengusaha/Pedagang</option>
+                        <option value="Pegawai Honorer">Pegawai Honorer</option>
+                        <option value="Pegawai BUMN">Pegawai BUMN</option>
+                        <option value="Anggota TNI/POLRI">Anggota TNI/POLRI</option>
+                        <option value="Dosen/Guru (Negeri/Swasta)">Dosen/Guru (Negeri/Swasta)</option>
+                        <option value="Buruh (Pabrik, Penjaga Toko, Konstruksi, dll)">Buruh (Pabrik, Penjaga Toko, Konstruksi, dll)</option>
+                        <option value="Petani/Nelayan">Petani/Nelayan</option>
+                        <option value="Pengacara/Notaris/Dokter, dll">Pengacara/Notaris/Dokter, dll</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
                 </div>
             </div>
 

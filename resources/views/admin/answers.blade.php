@@ -2,8 +2,11 @@
 
 @section('content')
 <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
+
     body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Poppins", sans-serif;
     }
 
     /* ===== BUTTON EXCEL ===== */
@@ -134,11 +137,12 @@
     }
 
     .page-title {
-        font-weight: 700;
+        font-weight: 600; 
         color: #000;
-        margin-bottom: 40px;
-        text-align: center;
+        margin-bottom: 30px;
+        text-align: center; 
         letter-spacing: 0.5px;
+        font-size: 1.75rem;
     }
 
     .alert-custom {
