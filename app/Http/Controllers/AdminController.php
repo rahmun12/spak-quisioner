@@ -13,18 +13,18 @@ class AdminController extends Controller
         $date = request('date');
         $serviceType = request('service_type');
 
-        // Get total users who have filled out the questionnaire
-        $totalRespondents = FormUser::has('questionnaireAnswers')->count();
+        // Get total users who have filled out personal data
+        $totalRespondents = FormUser::has('personalData')->count();
 
         $query = FormUser::with(['personalData', 'questionnaireAnswers.question', 'questionnaireAnswers.selectedOption']);
 
         // For dashboard view
         if (request()->routeIs('admin.dashboard')) {
             $totalQuestionnaires = FormUser::has('questionnaireAnswers')->count();
-            
+
             // Get average score using the same method as landing page
             $scoreData = $this->getAverageScore();
-            
+
             return view('admin.dashboard', [
                 'totalRespondents' => $totalRespondents,
                 'totalQuestionnaires' => $totalQuestionnaires,
@@ -44,7 +44,7 @@ class AdminController extends Controller
             });
         }
 
-        $users = $query->orderBy('created_at', 'asc')->paginate(10);
+        $users = $query->orderBy('created_at', 'desc')->paginate(10);
         $questions = \App\Models\Question::with('options')->orderBy('id')->get();
 
         return view('admin.users', [
@@ -85,8 +85,16 @@ class AdminController extends Controller
             return Excel::download(new AnswersExport($users, $questions, $answerValues), 'data-jawaban-kuisioner-' . now()->format('Y-m-d') . '.xlsx');
         }
 
-        $users = $query->orderBy('created_at', 'asc')->paginate(10);
-        return view('admin.answers', compact('users', 'startDate', 'endDate', 'answerValues', 'questions'));
+        // Clone the query for pagination
+        $paginatedQuery = (clone $query)->orderBy('created_at', 'desc');
+
+        // Get all users for score calculation
+        $allUsers = $query->get();
+
+        // Get paginated users for display
+        $users = $paginatedQuery->paginate(10);
+
+        return view('admin.answers', compact('users', 'allUsers', 'startDate', 'endDate', 'answerValues', 'questions'));
     }
 
     public function destroy($id)
@@ -123,6 +131,7 @@ class AdminController extends Controller
 
         // Get all answers
         $answers = \App\Models\QuestionnaireAnswer::with('selectedOption')->get();
+
 
         foreach ($answers as $answer) {
             if (isset($answerValues[$answer->selectedOption->option_text])) {

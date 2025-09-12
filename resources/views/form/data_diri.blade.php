@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <style>
         body {
@@ -90,12 +95,10 @@
         <h2 class="form-title">Formulir Data Diri</h2>
 
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+            <div class="d-none" id="success-message">{{ session('success') }}</div>
         @endif
 
-        <form method="POST" action="{{ route('data.store') }}">
+        <form id="dataDiriForm" method="POST" action="{{ route('data.store') }}">
             @csrf
 
             <div class="row mb-3">
@@ -133,7 +136,12 @@
                 </div>
                 <div class="col-md-6">
                     <label for="phone_number" class="form-label">No HP</label>
-                    <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" 
+                           inputmode="numeric" 
+                           pattern="[0-9]*" 
+                           title="Harap masukkan nomor telepon yang valid (hanya angka)" 
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                           required>
                 </div>
             </div>
 
@@ -189,4 +197,83 @@
             </div>
         </form>
     </div>
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('dataDiriForm');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            console.log('Sending form data...');
+            console.log('CSRF Token:', '{{ csrf_token() }}');
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Response error:', text);
+                        throw new Error('Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Terima Kasih!',
+                        html: `
+                            <div class="text-center">
+                                <i class="fas fa-check-circle text-success mb-3" style="font-size: 60px;"></i>
+                                <h4>${data.message}</h4>
+                                <p class="mt-3">Kami sangat menghargai waktu dan masukan yang telah Anda berikan.</p>
+                                <p>Data Anda telah berhasil disimpan.</p>
+                            </div>
+                        `,
+                        confirmButtonText: 'Lanjut ke Kuisioner',
+                        confirmButtonColor: '#4e73df',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        showCloseButton: false,
+                        showCancelButton: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = data.redirect_url;
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                console.error('Error details:', {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack
+                });
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi.',
+                    icon: 'error',
+                    confirmButtonText: 'Tutup'
+                });
+            });
+        });
+    });
+</script>
+@endpush
+
 @endsection

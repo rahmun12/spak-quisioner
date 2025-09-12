@@ -137,10 +137,10 @@
     }
 
     .page-title {
-        font-weight: 600; 
+        font-weight: 600;
         color: #000;
         margin-bottom: 30px;
-        text-align: center; 
+        text-align: center;
         letter-spacing: 0.5px;
         font-size: 1.75rem;
     }
@@ -191,10 +191,10 @@
                 </tr>
             </thead>
             <tbody>
-                @php $counter = 1 + (($users->currentPage() - 1) * $users->perPage()); @endphp
+                @php $i = 1; @endphp
                 @foreach ($users as $user)
                 <tr>
-                    <td>{{ $counter++ }}</td>
+                    <td>{{ $i++ }}</td>
                     <td class="col-nama">
                         {{ $user->name }}
                         @if ($user->suggestion)
@@ -236,47 +236,47 @@
                 <tr style="background-color: #f8f9fa; font-weight: 600;">
                     <td colspan="3" class="text-end">Rata-rata per Soal:</td>
                     @php
-                        $totalScores = [];
-                        $totalResponses = [];
-                        $grandTotal = 0;
-                        $totalQuestions = 0;
-                        
-                        // Initialize arrays for each question
-                        foreach ($questions as $question) {
-                            $totalScores[$question->id] = 0;
-                            $totalResponses[$question->id] = 0;
-                        }
-                        
-                        // Calculate totals for each question
-                        foreach ($users as $user) {
-                            foreach ($user->questionnaireAnswers as $answer) {
-                                $answerText = $answer->selectedOption->option_text;
-                                $value = $answerValues[$answerText] ?? 0;
-                                if (is_numeric($value)) {
-                                    $totalScores[$answer->question_id] += $value;
-                                    $totalResponses[$answer->question_id]++;
-                                }
-                            }
-                        }
-                        
-                        // Calculate and display averages for each question
-                        foreach ($questions as $question) {
-                            $avg = ($totalResponses[$question->id] > 0) 
-                                ? number_format($totalScores[$question->id] / $totalResponses[$question->id], 2)
-                                : '0.00';
-                            
-                            if (is_numeric($avg)) {
-                                $grandTotal += $avg;
-                                $totalQuestions++;
-                            }
-                            
-                            echo "<td class='text-center fw-bold' style='background-color: #e9ecef;'>".$avg."</td>";
-                        }
-                        
-                        // Calculate overall average
-                        $overallAverage = ($totalQuestions > 0) 
-                            ? number_format($grandTotal / $totalQuestions, 2)
-                            : '0.00';
+                    $totalScores = [];
+                    $totalResponses = [];
+                    $grandTotal = 0;
+                    $totalQuestions = 0;
+
+                    // Initialize arrays for each question
+                    foreach ($questions as $question) {
+                    $totalScores[$question->id] = 0;
+                    $totalResponses[$question->id] = 0;
+                    }
+
+                    // Calculate totals for each question
+                    foreach ($allUsers as $user) {
+                    foreach ($user->questionnaireAnswers as $answer) {
+                    $answerText = $answer->selectedOption->option_text;
+                    $value = $answerValues[$answerText] ?? 0;
+                    if (is_numeric($value)) {
+                    $totalScores[$answer->question_id] += $value;
+                    $totalResponses[$answer->question_id]++;
+                    }
+                    }
+                    }
+
+                    // Calculate and display averages for each question
+                    foreach ($questions as $question) {
+                    $avg = ($totalResponses[$question->id] > 0)
+                    ? number_format($totalScores[$question->id] / $totalResponses[$question->id], 2)
+                    : '0.00';
+
+                    if (is_numeric($avg)) {
+                    $grandTotal += $avg;
+                    $totalQuestions++;
+                    }
+
+                    echo "<td class='text-center fw-bold' style='background-color: #e9ecef;'>".$avg."</td>";
+                    }
+
+                    // Calculate overall average
+                    $overallAverage = ($totalQuestions > 0)
+                    ? number_format($grandTotal / $totalQuestions, 2)
+                    : '0.00';
                     @endphp
                 </tr>
                 <tr style="background-color: #e9ecef; font-weight: 700; font-size: 1.05em;">
@@ -289,34 +289,37 @@
         </table>
     </div>
 
-
+    <!-- Pagination -->
     <div class="mt-4">
-        {{ $users->appends(request()->except('page'))->links() }}
+        {{ $users->appends([
+            'start_date' => request('start_date'),
+            'end_date' => request('end_date')
+        ])->links('pagination::bootstrap-5') }}
     </div>
-    
+
     @php
-        // Determine the criteria based on the overall average
-        $criteria = '';
-        $criteriaClass = '';
-        
-        if ($overallAverage >= 4.51) {
-            $criteria = 'Sangat Baik';
-            $criteriaClass = 'text-success';
-        } elseif ($overallAverage >= 3.51) {
-            $criteria = 'Baik';
-            $criteriaClass = 'text-primary';
-        } elseif ($overallAverage >= 2.51) {
-            $criteria = 'Cukup';
-            $criteriaClass = 'text-warning';
-        } elseif ($overallAverage >= 1.00) {
-            $criteria = 'Kurang';
-            $criteriaClass = 'text-danger';
-        } else {
-            $criteria = 'Tidak Ada Data';
-            $criteriaClass = 'text-muted';
-        }
+    // Determine the criteria based on the overall average
+    $criteria = '';
+    $criteriaClass = '';
+
+    if ($overallAverage >= 4.51) {
+    $criteria = 'Sangat Baik';
+    $criteriaClass = 'text-success';
+    } elseif ($overallAverage >= 3.51) {
+    $criteria = 'Baik';
+    $criteriaClass = 'text-primary';
+    } elseif ($overallAverage >= 2.51) {
+    $criteria = 'Cukup';
+    $criteriaClass = 'text-warning';
+    } elseif ($overallAverage >= 1.00) {
+    $criteria = 'Kurang';
+    $criteriaClass = 'text-danger';
+    } else {
+    $criteria = 'Tidak Ada Data';
+    $criteriaClass = 'text-muted';
+    }
     @endphp
-    
+
     <div class="mt-4 p-4 border rounded" style="background-color: #f8f9fa;">
         <h5 class="mb-3">Interpretasi Hasil:</h5>
         <div class="d-flex align-items-center">

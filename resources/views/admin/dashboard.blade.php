@@ -115,7 +115,7 @@
                 </div>
                 <div class="card-content">
                     <h3>{{ number_format($totalRespondents) }}</h3>
-                    <p>Total Responden Kuisioner</p>
+                    <p>Total Responden</p>
                 </div>
             </div>
         </div>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="card-content">
                     <h3>{{ number_format($averageScore, 2, ',', '.') }}</h3>
-                    <p>Rata-rata Nilai</p>
+                    <p>Nilai Indeks Persepsi Anti Korupsi</p>
                 </div>
             </div>
         </div>

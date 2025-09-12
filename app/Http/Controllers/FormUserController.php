@@ -16,7 +16,6 @@ class FormUserController extends Controller
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'age' => 'required|string|max:10',
@@ -28,27 +27,44 @@ class FormUserController extends Controller
             'service_type' => 'required|string|in:PBB,Pajak Hotel,Pajak Parkir,Pajak Restoran',
         ]);
 
+        try {
+            $validated['token'] = Str::random(30);
 
-        $validated['token'] = Str::random(30);
+            $formUser = FormUser::create($validated);
+            PersonalData::create([
+                'form_user_id' => $formUser->id,
+                'full_name' => $validated['full_name'],
+                'age' => $validated['age'],
+                'address' => $validated['address'],
+                'gender' => $validated['gender'],
+                'phone_number' => $validated['phone_number'],
+                'education' => $validated['education'],
+                'occupation' => $validated['occupation'],
+                'service_type' => $validated['service_type'],
+            ]);
 
+            $request->session()->regenerate();
 
-        $formUser = FormUser::create($validated);
-        PersonalData::create([
-            'form_user_id' => $formUser->id,
-            'full_name' => $validated['full_name'],
-            'age' => $validated['age'],
-            'address' => $validated['address'],
-            'gender' => $validated['gender'],
-            'phone_number' => $validated['phone_number'],
-            'education' => $validated['education'],
-            'occupation' => $validated['occupation'],
-            'service_type' => $validated['service_type'],
-        ]);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data diri berhasil disimpan. Silakan isi kuesioner berikutnya.',
+                    'redirect_url' => route('kuisioner.form', $formUser->id)
+                ]);
+            }
 
-
-        $request->session()->regenerate();
-
-        return redirect()->route('kuisioner.form', $formUser->id)
-            ->with('success', 'Data diri berhasil disimpan. Silakan isi kuesioner berikutnya.');
+            return redirect()->route('kuisioner.form', $formUser->id)
+                ->with('success', 'Data diri berhasil disimpan. Silakan isi kuesioner berikutnya.');
+                
+        } catch (\Exception $e) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.'
+                ], 500);
+            }
+            
+            return back()->with('error', 'Terjadi kesalahan. Silakan coba lagi.');
+        }
     }
 }

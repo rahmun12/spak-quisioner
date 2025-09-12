@@ -10,6 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <style>
         /* Navbar konsisten pakai Roboto */
         .navbar-custom,
@@ -73,50 +76,61 @@
 <body>
 
     @if (!request()->is('admin/login*') && !request()->is('admin/register*'))
-        <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
-            <div class="container">
-                <div class="d-flex align-items-center">
-                    <img src="{{ asset('images/pemkot.png') }}" alt="Pemkot Logo" class="logo-img">
-                    <img src="{{ asset('images/bapenda.png') }}" alt="Bapenda Logo" class="logo-img">
-                </div>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav align-items-center">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('landing') ? 'active' : '' }}"
-                                href="{{ route('landing') }}">Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('data.form') ? 'active' : '' }}"
-                                href="{{ route('data.form') }}">Data Diri</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Kuisioner</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.login') }}" class="btn login-btn ms-2">LOGIN</a>
-                        </li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <img src="{{ asset('images/pemkot.png') }}" alt="Pemkot Logo" class="logo-img">
+                <img src="{{ asset('images/bapenda.png') }}" alt="Bapenda Logo" class="logo-img">
             </div>
-        </nav>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('landing') ? 'active' : '' }}"
+                            href="{{ route('landing') }}">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('data.form') ? 'active' : '' }}"
+                            href="{{ route('data.form') }}">Data Diri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Kuisioner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.login') }}" class="btn login-btn ms-2">LOGIN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     @endif
 
     {{-- 🔹 Kondisi: kalau halaman punya section fullpage, tidak pakai container --}}
     @if (View::hasSection('fullpage'))
-        @yield('content')
+    @yield('content')
     @else
-        <div class="container mt-4">
-            @yield('content')
-        </div>
+    <div class="container mt-4">
+        @yield('content')
+    </div>
     @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: "{{ session('success') }}",
+        showConfirmButton: false,
+        timer: 2000
+    })
+</script>
+@endif
