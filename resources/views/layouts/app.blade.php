@@ -79,8 +79,10 @@
     <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
         <div class="container">
             <div class="d-flex align-items-center">
-                <img src="{{ asset('images/pemkot.png') }}" alt="Pemkot Logo" class="logo-img">
-                <img src="{{ asset('images/bapenda.png') }}" alt="Bapenda Logo" class="logo-img">
+                <a href="{{ route('landing') }}" class="d-flex align-items-center text-decoration-none">
+                    <img src="{{ asset('images/pemkot.png') }}" alt="Pemkot Logo" class="logo-img">
+                    <img src="{{ asset('images/bapenda.png') }}" alt="Bapenda Logo" class="logo-img">
+                </a>
             </div>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

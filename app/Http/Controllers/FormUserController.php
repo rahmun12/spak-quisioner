@@ -55,7 +55,6 @@ class FormUserController extends Controller
 
             return redirect()->route('kuisioner.form', $formUser->id)
                 ->with('success', 'Data diri berhasil disimpan. Silakan isi kuesioner berikutnya.');
-                
         } catch (\Exception $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -63,7 +62,7 @@ class FormUserController extends Controller
                     'message' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.'
                 ], 500);
             }
-            
+
             return back()->with('error', 'Terjadi kesalahan. Silakan coba lagi.');
         }
     }

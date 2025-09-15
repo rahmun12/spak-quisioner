@@ -153,23 +153,127 @@
         padding: 14px;
         font-weight: 500;
     }
+
+    .btn-excel {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-excel {
+        background-color: #217346;
+        color: #fff !important;
+        font-weight: 600;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+    
+    .dashboard-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
+    }
+
+    /* Card Stats */
+    .card-stat {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: #fff;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .card-stat:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-box {
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+    }
+
+    .card-stat h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0;
+        color: #2c3e50;
+    }
+
+    .card-stat p {
+        margin: 5px 0 0;
+        font-size: 0.95rem;
+        color: #6c757d;
+    }
 </style>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title mb-0">Data Jawaban Kuisioner (Nilai)</h2>
-        <form action="{{ route('admin.answers') }}" method="GET" class="d-inline">
-            @if(request('start_date'))
-            <input type="hidden" name="start_date" value="{{ request('start_date') }}">
-            @endif
-            @if(request('end_date'))
-            <input type="hidden" name="end_date" value="{{ request('end_date') }}">
-            @endif
-            <input type="hidden" name="export" value="excel">
-            <button type="submit" class="btn btn-excel btn-sm shadow-sm">
-                <i class="fas fa-file-excel me-1"></i> Export Excel
-            </button>
-        </form>
+<div class="container py-4">
+    <div class="d-flex flex-column">
+        <div class="text-center mb-4">
+            <h1 class="dashboard-title">Data Jawaban Kuisioner (Nilai)</h1>
+        </div>
+        <div class="mb-4">
+            <form action="{{ route('admin.answers') }}" method="GET" class="d-inline-block">
+                @if(request('start_date'))
+                <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                @endif
+                @if(request('end_date'))
+                <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+                @endif
+                <input type="hidden" name="export" value="excel">
+                <button type="submit" class="btn-excel shadow-sm d-flex align-items-center">
+                    <i class="fas fa-file-excel me-2"></i>
+                    <span>Export Excel</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card-stat">
+                <div class="icon-box" style="background-color: #e3f2fd;">
+                    <i class="fas fa-database" style="color: #1976d2;"></i>
+                </div>
+                <div>
+                    <h3 class="mb-1">{{ $allUsers->sum(function($user) { return $user->questionnaireAnswers->count(); }) }}</h3>
+                    <p class="mb-0 text-muted">Jumlah Data</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card-stat">
+                <div class="icon-box" style="background-color: #e8f5e9;">
+                    <i class="fas fa-users" style="color: #2e7d32;"></i>
+                </div>
+                <div>
+                    <h3 class="mb-1">{{ $allUsers->count() }}</h3>
+                    <p class="mb-0 text-muted">Jumlah Responden</p>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -178,8 +282,8 @@
         <i class="fas fa-info-circle me-2"></i> Tidak ada data yang ditemukan untuk filter yang dipilih.
     </div>
     @else
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
+    <div class="table-responsive bg-white rounded-3 shadow-sm">
+        <table class="table table-hover align-middle">
             <thead>
                 <tr>
                     <th class="col-no">No</th>

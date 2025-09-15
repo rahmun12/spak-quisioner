@@ -19,7 +19,6 @@ class QuestionnaireController extends Controller
 
         $questions = Question::with('options')->get();
 
-
         return view('form.kuisioner', [
             'questions'   => $questions,
             'formUserId'  => $id,

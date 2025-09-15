@@ -94,7 +94,25 @@ class AdminController extends Controller
         // Get paginated users for display
         $users = $paginatedQuery->paginate(10);
 
-        return view('admin.answers', compact('users', 'allUsers', 'startDate', 'endDate', 'answerValues', 'questions'));
+        // Calculate total data (total answers)
+        $totalData = 0;
+        foreach ($allUsers as $user) {
+            $totalData += $user->questionnaireAnswers->count();
+        }
+
+        // Get total unique respondents
+        $totalRespondents = $allUsers->count();
+
+        return view('admin.answers', compact(
+            'users', 
+            'allUsers', 
+            'startDate', 
+            'endDate', 
+            'answerValues', 
+            'questions',
+            'totalData',
+            'totalRespondents'
+        ));
     }
 
     public function destroy($id)
