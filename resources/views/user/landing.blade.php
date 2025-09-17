@@ -209,12 +209,81 @@
             color: #ffffff;
             font-weight: 600;
         }
+
+        /* One-time, on-load animations (no loops) */
+        .hero-enter {
+            animation: heroFadeIn 950ms cubic-bezier(0.16, 1, 0.3, 1) 0s 1 both;
+        }
+
+        .lion-enter {
+            animation: lionPopIn 1100ms cubic-bezier(0.16, 1, 0.3, 1) 120ms 1 both;
+        }
+
+        /* Staggered text entrance for smoother feel */
+        .text-enter-1 {
+            animation: textFadeUp 900ms cubic-bezier(0.16, 1, 0.3, 1) 140ms 1 both;
+        }
+        .text-enter-2 {
+            animation: textFadeUp 900ms cubic-bezier(0.16, 1, 0.3, 1) 260ms 1 both;
+        }
+
+        /* Hint the browser to optimize these properties */
+        .hero-enter, .lion-enter, .text-enter-1, .text-enter-2 {
+            will-change: transform, opacity;
+        }
+
+        @keyframes heroFadeIn {
+            0% {
+                transform: translate3d(0, 22px, 0);
+                opacity: 0;
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes lionPopIn {
+            0% {
+                transform: translate3d(0, 26px, 0) scale(0.95);
+                opacity: 0;
+            }
+            60% {
+                transform: translate3d(0, 0, 0) scale(1.03);
+                opacity: 1;
+            }
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes textFadeUp {
+            0% {
+                transform: translate3d(0, 16px, 0);
+                opacity: 0;
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+
+        /* Respect reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-enter,
+            .lion-enter,
+            .text-enter-1,
+            .text-enter-2 {
+                animation: none !important;
+            }
+        }
     </style>
 
     <div class="hero-section">
-        <div class="hero-box">
-            <h1>Selamat Datang <br> di Bapenda Kota Malang</h1>
-            <p>
+        <div class="hero-box hero-enter">
+            <h1 class="text-enter-1">Selamat Datang <br> di Bapenda Kota Malang</h1>
+            <p class="text-enter-2">
                 Badan Pendapatan Daerah (Bapenda) Kota Malang bertugas membantu Wali Kota dalam
                 merumuskan dan melaksanakan kebijakan di bidang pendapatan daerah, terutama pengelolaan pajak
                 dan retribusi, guna meningkatkan penerimaan asli daerah.
@@ -222,7 +291,7 @@
         </div>
 
         <!-- Tambah gambar singa -->
-        <img src="{{ asset('images/singa1.png') }}" alt="Singa" class="lion">
+        <img src="{{ asset('images/singa1.png') }}" alt="Singa" class="lion lion-enter">
     </div>
 
     <!-- Bagian gambar bp-bg setelah hero -->

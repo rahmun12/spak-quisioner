@@ -258,8 +258,8 @@
                     <i class="fas fa-database" style="color: #1976d2;"></i>
                 </div>
                 <div>
-                    <h3 class="mb-1">{{ $allUsers->sum(function($user) { return $user->questionnaireAnswers->count(); }) }}</h3>
-                    <p class="mb-0 text-muted">Jumlah Data</p>
+                    <h3 class="mb-1">{{ $allUsers->filter(function($user){ return $user->questionnaireAnswers && $user->questionnaireAnswers->count() > 0; })->count() }}</h3>
+                    <p class="mb-0 text-muted">Kuisioner Masuk</p>
                 </div>
             </div>
         </div>

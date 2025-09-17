@@ -70,6 +70,48 @@
                 border-radius: 8px;
             }
         }
+
+        /* SweetAlert2 - Light Blue Theme */
+        .swal2-popup.blue-swal {
+            border-radius: 18px !important;
+            padding: 28px 24px !important;
+            background: linear-gradient(180deg, #f3faff, #ffffff) !important;
+            box-shadow: 0 12px 40px rgba(0, 94, 184, 0.15), 0 0 0 1px rgba(142, 211, 245, 0.25) inset !important;
+        }
+        .swal2-title {
+            color: #004AAD !important;
+            font-weight: 700 !important;
+            letter-spacing: .2px;
+        }
+        .swal2-html-container {
+            color: #2b3a42 !important;
+            font-size: 0.975rem !important;
+        }
+        .blue-swal-btn.swal2-confirm {
+            background: linear-gradient(135deg, #005EB8, #2f8ed6) !important;
+            border: none !important;
+            box-shadow: 0 6px 18px rgba(0, 94, 184, 0.35) !important;
+            border-radius: 12px !important;
+            padding: 10px 18px !important;
+            font-weight: 600 !important;
+        }
+        .blue-swal-btn.swal2-confirm:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+        .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #8ED3F5, #005EB8) !important;
+            height: 4px !important;
+        }
+        .blue-swal-icon {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: radial-gradient(closest-side, #e9f6ff, #cfeafe);
+            display: inline-flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 0 2px #8ED3F5, 0 8px 18px rgba(0,94,184,0.15);
+        }
+        .blue-swal-check {
+            font-size: 42px; color: #0a74d3; line-height: 1;
+        }
     </style>
 </head>
 
@@ -128,11 +170,20 @@
 @if(session('success'))
 <script>
     Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: "{{ session('success') }}",
+        customClass: {
+            popup: 'blue-swal',
+            confirmButton: 'blue-swal-btn'
+        },
+        html: `
+            <div class="blue-swal-icon mb-3">
+                <span class="blue-swal-check">✓</span>
+            </div>
+            <h2 class="swal2-title">Berhasil!</h2>
+            <div class="swal2-html-container">{{ session('success') }}</div>
+        `,
         showConfirmButton: false,
-        timer: 2000
-    })
+        timer: 2200,
+        timerProgressBar: true
+    });
 </script>
 @endif

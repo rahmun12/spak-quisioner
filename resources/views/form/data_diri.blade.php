@@ -3,32 +3,32 @@
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 @endpush
 
 @section('content')
     <style>
         body {
-            background-color: #F2F5F7;
+            background: linear-gradient(135deg, #f6f9fc, #eef3f9);
             font-family: 'Roboto', sans-serif;
         }
 
         .form-container {
             width: 100%;
-            max-width: 850px;
-            margin: 50px auto;
+            max-width: 880px;
+            margin: 60px auto;
             background-color: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
             animation: fadeIn 0.5s ease-in-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -38,56 +38,65 @@
         .form-title {
             text-align: center;
             font-weight: 700;
-            color: #000;
-            margin-bottom: 30px;
-            font-size: 1.6rem;
+            color: #1a1a1a;
+            margin-bottom: 35px;
+            font-size: 1.8rem;
+            position: relative;
         }
+
 
         .form-label {
             font-weight: 500;
             color: #333;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .form-control,
-        .form-select {
-            border-radius: 10px;
+        .form-select,
+        textarea {
+            border-radius: 12px;
             border: 1px solid #ccc;
-            padding: 10px 14px;
+            padding: 12px 15px;
             transition: all 0.3s ease;
             font-size: 0.95rem;
         }
 
         .form-control:focus,
-        .form-select:focus {
+        .form-select:focus,
+        textarea:focus {
             border-color: #005EB8;
-            box-shadow: 0 0 0 0.2rem rgba(0, 94, 184, 0.15);
+            box-shadow: 0 0 8px rgba(0, 94, 184, 0.15);
+        }
+
+        textarea {
+            resize: none;
         }
 
         .btn-primary {
-            background-color: #005EB8;
+            background: #005EB8;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
-            padding: 10px 28px;
+            padding: 12px 32px;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .btn-primary:hover {
             background-color: #004b94;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 94, 184, 0.25);
+            box-shadow: 0 6px 18px rgba(0, 94, 184, 0.25);
         }
 
         .alert-success {
             background-color: #e6f7ff;
             border-left: 5px solid #005EB8;
             color: #005EB8;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 14px 22px;
+            border-radius: 10px;
             margin-bottom: 20px;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
         }
     </style>
 
@@ -101,7 +110,7 @@
         <form id="dataDiriForm" method="POST" action="{{ route('data.store') }}">
             @csrf
 
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-6">
                     <label for="full_name" class="form-label">Nama Lengkap</label>
                     <input type="text" class="form-control" id="full_name" name="full_name" required>
@@ -120,12 +129,12 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="address" class="form-label">Alamat</label>
-                <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-6">
                     <label for="gender" class="form-label">Jenis Kelamin</label>
                     <select class="form-select" id="gender" name="gender" required>
@@ -145,7 +154,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-6">
                     <label for="education" class="form-label">Pendidikan</label>
                     <select class="form-select" id="education" name="education" required>
@@ -197,83 +206,4 @@
             </div>
         </form>
     </div>
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('dataDiriForm');
-        
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            
-            console.log('Sending form data...');
-            console.log('CSRF Token:', '{{ csrf_token() }}');
-            
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        console.error('Response error:', text);
-                        throw new Error('Network response was not ok');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Response data:', data);
-                if (data.success) {
-                    Swal.fire({
-                        title: 'Terima Kasih!',
-                        html: `
-                            <div class="text-center">
-                                <i class="fas fa-check-circle text-success mb-3" style="font-size: 60px;"></i>
-                                <h4>${data.message}</h4>
-                                <p class="mt-3">Kami sangat menghargai waktu dan masukan yang telah Anda berikan.</p>
-                                <p>Data Anda telah berhasil disimpan.</p>
-                            </div>
-                        `,
-                        confirmButtonText: 'Lanjut ke Kuisioner',
-                        confirmButtonColor: '#4e73df',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        showCloseButton: false,
-                        showCancelButton: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = data.redirect_url;
-                        }
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-                console.error('Error details:', {
-                    name: error.name,
-                    message: error.message,
-                    stack: error.stack
-                });
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi.',
-                    icon: 'error',
-                    confirmButtonText: 'Tutup'
-                });
-            });
-        });
-    });
-</script>
-@endpush
-
 @endsection
